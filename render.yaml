@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: kiko-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    envVars:
+      - key: KIKO_ENV
+        value: production
+      - key: KAGGLE_API_TOKEN
+        sync: false
+      - key: KIKO_MODEL
+        sync: false
+      - key: KIKO_ALLOWED_UIDS
+        sync: false
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: /etc/secrets/firebase-admin.json
+      - key: KIKO_PROMPTS_DIR
+        value: /etc/secrets
+      - key: CORS_ORIGINS
+        sync: false
+      - key: STREAM_MODE
+        value: auto
+      - key: MAX_FILE_MB
+        value: "10"
+      - key: MAX_TOTAL_MB
+        value: "50"
+      - key: MAX_FILES
+        value: "20"
+      - key: FILE_TTL_HOURS
+        value: "6"
+      - key: MAX_DOC_CHARS
+        value: "35000"
+      - key: MAX_CONTEXT_CHARS
+        value: "120000"
+      - key: MAX_ATTACHMENTS
+        value: "4"
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "20"

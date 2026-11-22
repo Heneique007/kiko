@@ -1,0 +1,13 @@
+**/.env
+**/.env.*
+**/prompts-private
+**/*service-account*.json
+**/firebase-admin*.json
+**/__pycache__
+**/.pytest_cache
+.git
+frontend
+original
+upload
+.venv
+node_modules
