@@ -1,0 +1,4 @@
+@media(min-width:600px){.app-header{height:88px;min-height:88px}.new-chat-button{right:36px}.conversation{padding:24px 32px}.composer-region{padding-left:18px;padding-right:18px;padding-bottom:5px}.composer{padding:20px 16px 12px}.composer textarea{min-height:44px}.mode-picker button{font-size:12px;padding:9px 13px}.message-content,.user-text{font-size:15px}.message.user{max-width:80%}}
+@media(min-width:1000px){.new-chat-button{right:52px}.conversation{padding-bottom:32px}}
+@media(max-height:690px){.welcome h1{font-size:32px;margin:14px 0}.app-header{height:62px;min-height:62px}.login-logo{width:150px;margin-bottom:24px}}
+@media(max-height:500px){.welcome h1{font-size:28px}.composer textarea{max-height:90px}.conversation{padding-top:8px}.composer{padding-top:10px}.app-header{height:54px;min-height:54px}}

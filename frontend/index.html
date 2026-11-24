@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#e8e6e2">
+  <meta name="description" content="KIKO">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="KIKO">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self'; img-src 'self' data: blob:; connect-src 'self' https: http://localhost:8000 http://127.0.0.1:8000; frame-src https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; manifest-src 'self'">
+  <meta name="kiko-build" content="source">
+  <meta name="kiko-version" content="1.1.0">
+  <title>KIKO</title>
+  <link rel="icon" type="image/png" href="./assets/icons/favicon.png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <script type="module" src="./js/app.js"></script>
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m6 12 6-6 6 6M12 6v13"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M5 21v-3a7 7 0 0 1 14 0v3"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5v15M3 4h4a5 5 0 0 1 5 2 5 5 0 0 1 5-2h4v15h-4a5 5 0 0 0-5 2 5 5 0 0 0-5-2H3z"/></symbol>
+    <symbol id="i-think" viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M8 14a7 7 0 1 1 8 0l-1 3H9z"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-7z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V3H3v13h5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2 7M20 4v7h-7"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H5v20h14V7zM14 2v5h5M8 12h8M8 16h6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v16m-6-6 6 6 6-6"/></symbol>
+  </defs></svg>
+  <div id="network-banner" class="network-banner" role="status" hidden>Sem ligação à internet. A IA precisa de uma ligação ativa.</div>
+  <main id="login-view" class="login-view">
+    <section class="login-panel" aria-label="Iniciar sessão">
+      <div class="login-box">
+        <img class="login-logo" src="./assets/wordmark.png" alt="KIKO" width="606" height="210">
+        <form id="login-form">
+          <label for="email" class="sr-only">Email</label><input id="email" name="email" type="email" placeholder="Email" autocomplete="username" required maxlength="254" inputmode="email">
+          <label for="password" class="sr-only">Palavra-passe</label><div class="password-wrap"><input id="password" name="password" type="password" placeholder="Palavra-passe" autocomplete="current-password" required maxlength="128"><button id="toggle-password" class="icon-button" type="button" aria-label="Mostrar palavra-passe" aria-pressed="false"><svg><use href="#i-eye"/></svg></button></div>
+          <p id="login-error" class="form-message" role="alert" hidden></p>
+          <button id="login-submit" class="primary-button" type="submit">Iniciar sessão</button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <main id="chat-view" class="chat-view" hidden>
+    <header class="app-header">
+      <div class="header-brand"><img src="./assets/wordmark.png" alt="KIKO" width="108" height="36"></div>
+      <button id="new-chat" class="icon-button new-chat-button" type="button" aria-label="Nova conversa"><svg><use href="#i-plus"/></svg></button>
+    </header>
+    <section id="conversation" class="conversation" aria-label="Conversa">
+      <div id="welcome" class="welcome">
+        <h1>O que vamos<br><span>descobrir hoje?</span></h1>
+      </div>
+      <div id="messages" class="messages" aria-label="Mensagens"></div>
+    </section>
+    <div class="composer-region">
+      <button id="scroll-bottom" class="scroll-bottom icon-button" type="button" aria-label="Ir para o fim da conversa" hidden><svg><use href="#i-down"/></svg></button>
+      <p id="chat-error" class="chat-error" role="alert" hidden></p>
+      <div id="attachment-list" class="attachment-list" aria-label="Anexos da mensagem"></div>
+      <form id="composer" class="composer">
+        <label for="message-input" class="sr-only">Mensagem para a KIKO</label>
+        <textarea id="message-input" rows="1" maxlength="160000" placeholder="Pergunte, explore, descubra…" enterkeyhint="enter"></textarea>
+        <div class="composer-toolbar"><div class="composer-left"><button id="attach-button" class="icon-button" type="button" aria-label="Anexar fotografias ou documentos" disabled><svg><use href="#i-plus"/></svg></button><div class="mode-picker" role="group" aria-label="Modo da resposta"><button type="button" data-mode="learn" aria-pressed="false">Learn</button><button type="button" data-mode="think" aria-pressed="true">Think</button><button type="button" data-mode="quick" aria-pressed="false">Quick</button></div></div><button id="send-button" class="send-button" type="submit" aria-label="Enviar mensagem" disabled><svg><use href="#i-arrow"/></svg></button><button id="stop-button" class="send-button stop-button" type="button" aria-label="Interromper resposta" hidden><svg><use href="#i-stop"/></svg></button></div>
+      </form>
+      <input id="file-input" type="file" multiple hidden>
+      <p class="accuracy-note">O KIKO está em desenvolvimento. Pode cometer erros</p>
+    </div>
+    <span id="app-version" class="app-version">1.1.0</span>
+  </main>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript>Ative o JavaScript para utilizar a KIKO.</noscript>
+</body>
+</html>
