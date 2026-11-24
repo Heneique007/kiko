@@ -28,4 +28,5 @@ jobs:
           python-version: '3.12'
       - run: pip install -r tests/requirements-browser.txt
       - run: python -m playwright install --with-deps chromium
+      - run: python tests/build_check.py
       - run: python tests/browser_check.py
