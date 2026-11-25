@@ -7,6 +7,7 @@ import { build } from 'esbuild';
 import { JSDOM, VirtualConsole } from 'jsdom';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const html = await fs.readFile(path.join(root, 'frontend/index.html'), 'utf8');
+const version = JSON.parse(await fs.readFile(path.join(root, 'frontend/version.json'), 'utf8'));
 const fakeAuth = `const auth={currentUser:null};let callback;export const browserLocalPersistence="local";export function getAuth(){return auth;}export async function setPersistence(a,mode){if(mode!==browserLocalPersistence)throw new Error("Persistent authentication required");}export function onAuthStateChanged(a,cb){callback=cb;queueMicrotask(()=>cb(a.currentUser));}export async function signInWithEmailAndPassword(a,email,password){if(password!=='correct'){const e=new Error('invalid');e.code='auth/invalid-credential';throw e;}a.currentUser={email,getIdToken:async()=> 'test-token'};callback(a.currentUser);}export async function signOut(a){a.currentUser=null;callback(null);}export async function sendPasswordResetEmail(){}`;
 const bundle = await build({ entryPoints: [path.join(root,'frontend/js/app.js')], bundle: true, write: false, format:'iife', target:'es2022', plugins:[{name:'test-only-external-fixtures',setup(b){
   b.onResolve({filter:/config\.js$/},() => ({path:'config',namespace:'fixture'}));
@@ -27,7 +28,10 @@ async function harness(){
   w.URL.createObjectURL=()=> 'blob:test';w.URL.revokeObjectURL=()=>{};w.document.execCommand=()=>true;
   w.fetch=async(url,options={})=>{
     if(options.signal?.aborted)throw options.signal.reason;
+    url = String(url);
     calls.push({url,options});
+    const pathname = new URL(url, w.location.href).pathname;
+    if(pathname === '/api/version' || pathname === '/kiko/version.json')return new Response(JSON.stringify(version));
     if(url.endsWith('/api/me'))return new Response(JSON.stringify(me));
     if(url.includes('/api/files/'))return new Response('{"deleted":true}');
     if(url.endsWith('/api/chat')){
@@ -100,7 +104,10 @@ test('UI: attachments, duplicate prevention, new conversation clear temporary st
     await h.send('Leia isto');const sent=JSON.parse(h.calls.find(x=>x.url.endsWith('/api/chat')).options.body);assert.deepEqual(sent.messages[0].file_ids,['file-test']);
     h.click('#new-chat');assert.equal(h.w.document.querySelectorAll('.message').length,0);assert.equal(h.el('welcome').hidden,false);assert.equal(h.el('chat-view').hidden,false);
     await h.send('Outra mensagem');assert.equal(h.el('logout'),null);h.click('#new-chat');
-    assert.equal(h.w.document.querySelectorAll('.message').length,0);assert.equal(h.w.localStorage.length,0);
+    assert.equal(h.w.document.querySelectorAll('.message').length,0);// A versão é persistida, mas o histórico e os anexos não.
+    const releaseKey = 'kiko-release:https://kiko.test/kiko/';
+    assert.equal(h.w.localStorage.getItem(releaseKey), `${version.build}:${version.version}`);
+    assert.deepEqual(Object.keys(h.w.localStorage), [releaseKey]);
     assert.deepEqual(h.errors,[]);
   }finally{h.dom.window.close();}
 });
